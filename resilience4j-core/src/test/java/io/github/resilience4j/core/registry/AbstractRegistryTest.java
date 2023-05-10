@@ -18,9 +18,9 @@ public class AbstractRegistryTest {
 
     @Test
     public void shouldInitRegistryTags(){
-        TestRegistry testRegistry = new TestRegistry(Map.of("Tag1","Tag1Value"));
+        TestRegistry testRegistry = new TestRegistry(io.github.resilience4j.core.utils.MapUtils.of("Tag1","Tag1Value"));
         assertThat(testRegistry.getTags()).isNotEmpty();
-        assertThat(testRegistry.getTags()).containsOnly(Map.entry("Tag1","Tag1Value"));
+        assertThat(testRegistry.getTags()).containsOnly(io.github.resilience4j.core.utils.MapUtils.entry("Tag1","Tag1Value"));
     }
 
 
@@ -197,12 +197,12 @@ public class AbstractRegistryTest {
         List<RegistryEventConsumer<String>> registryEventConsumers = new ArrayList<>();
         registryEventConsumers.add(registryEventConsumer);
         TestRegistry testRegistry  = new TestRegistry(
-            registryEventConsumers, Map.of("Tag1","Tag1Value"), new InMemoryRegistryStore<>());
+            registryEventConsumers, io.github.resilience4j.core.utils.MapUtils.of("Tag1","Tag1Value"), new InMemoryRegistryStore<>());
 
         assertEquals("Wrong Value", "default", testRegistry.getDefaultConfig());
         assertThat(testRegistry.getDefaultConfig()).isEqualTo("default");
         assertThat(testRegistry.getTags()).isNotEmpty();
-        assertThat(testRegistry.getTags()).containsOnly(Map.entry("Tag1","Tag1Value"));
+        assertThat(testRegistry.getTags()).containsOnly(io.github.resilience4j.core.utils.MapUtils.entry("Tag1","Tag1Value"));
 
         String addedEntry1 = testRegistry.computeIfAbsent("name", () -> "entry1");
         assertThat(addedEntry1).isEqualTo("entry1");

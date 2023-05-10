@@ -66,10 +66,10 @@ public class HedgeRegistryTest {
         HedgeRegistry registry = HedgeRegistry.builder()
             .withConfigs(hedgeConfigs)
             .withConsumer(new NoOpHedgeEventConsumer())
-            .withTags(Map.of("Tag1Key", "Tag1Value"))
+            .withTags(io.github.resilience4j.core.utils.MapUtils.of("Tag1Key", "Tag1Value"))
             .build();
         assertThat(registry.getTags()).isNotEmpty();
-        assertThat(registry.getTags()).containsAllEntriesOf(Map.of("Tag1Key", "Tag1Value"));
+        assertThat(registry.getTags()).containsAllEntriesOf(io.github.resilience4j.core.utils.MapUtils.of("Tag1Key", "Tag1Value"));
     }
 
     @Test
@@ -84,7 +84,7 @@ public class HedgeRegistryTest {
         HedgeConfig hedgeConfig = HedgeConfig.ofDefaults();
         Map<String, HedgeConfig> hedgeConfigs = Collections
             .singletonMap("default", hedgeConfig);
-        Map<String, String> hedgeTags = Map.of("key1", "value1", "key2", "value2");
+        Map<String, String> hedgeTags = io.github.resilience4j.core.utils.MapUtils.of("key1", "value1", "key2", "value2");
         HedgeRegistry hedgeRegistry = HedgeRegistry.builder().withConfigs(hedgeConfigs).withTags(hedgeTags).build();
 
         Hedge Hedge = hedgeRegistry.hedge("testName");
@@ -95,7 +95,7 @@ public class HedgeRegistryTest {
     @Test
     public void tagsAddedToInstance() {
         HedgeRegistry hedgeRegistry = HedgeRegistry.builder().build();
-        Map<String, String> hedgeTags = Map.of("key1", "value1", "key2", "value2");
+        Map<String, String> hedgeTags = io.github.resilience4j.core.utils.MapUtils.of("key1", "value1", "key2", "value2");
         Hedge Hedge = hedgeRegistry.hedge("testName", hedgeTags);
 
         assertThat(Hedge.getTags()).containsAllEntriesOf(hedgeTags);
@@ -105,10 +105,10 @@ public class HedgeRegistryTest {
     public void tagsOfHedgesShouldNotBeMixed() {
         HedgeRegistry hedgeRegistry = HedgeRegistry.builder().build();
         HedgeConfig hedgeConfig = HedgeConfig.ofDefaults();
-        Map<String, String> hedgeTags = Map.of("key1", "value1", "key2", "value2");
+        Map<String, String> hedgeTags = io.github.resilience4j.core.utils.MapUtils.of("key1", "value1", "key2", "value2");
         Hedge Hedge = hedgeRegistry
             .hedge("testName", hedgeConfig, hedgeTags);
-        Map<String, String> hedgeTags2 = Map.of("key3", "value3", "key4", "value4");
+        Map<String, String> hedgeTags2 = io.github.resilience4j.core.utils.MapUtils.of("key3", "value3", "key4", "value4");
         Hedge Hedge2 = hedgeRegistry.hedge("otherTestName", hedgeConfig, hedgeTags2);
 
         assertThat(Hedge.getTags()).containsAllEntriesOf(hedgeTags);
@@ -120,15 +120,15 @@ public class HedgeRegistryTest {
         HedgeConfig hedgeConfig = HedgeConfig.ofDefaults();
         Map<String, HedgeConfig> hedgeConfigs = Collections
             .singletonMap("default", hedgeConfig);
-        Map<String, String> hedgeTags = Map.of("key1", "value1", "key2", "value2");
-        Map<String, String> instanceTags = Map.of("key1", "value3", "key4", "value4");
+        Map<String, String> hedgeTags = io.github.resilience4j.core.utils.MapUtils.of("key1", "value1", "key2", "value2");
+        Map<String, String> instanceTags = io.github.resilience4j.core.utils.MapUtils.of("key1", "value3", "key4", "value4");
         HedgeRegistry hedgeRegistry = HedgeRegistry.builder()
             .withConfigs(hedgeConfigs)
             .withTags(hedgeTags)
             .build();
         Hedge hedge = hedgeRegistry.hedge("testName", hedgeConfig, instanceTags);
 
-        Map<String, String> expectedTags = Map.of("key1", "value3", "key2", "value2", "key4", "value4");
+        Map<String, String> expectedTags = io.github.resilience4j.core.utils.MapUtils.of("key1", "value3", "key2", "value2", "key4", "value4");
         assertThat(hedge.getTags()).containsAllEntriesOf(expectedTags);
     }
 

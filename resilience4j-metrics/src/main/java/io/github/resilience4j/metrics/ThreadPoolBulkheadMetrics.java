@@ -24,6 +24,7 @@ import io.github.resilience4j.bulkhead.BulkheadRegistry;
 import io.github.resilience4j.bulkhead.ThreadPoolBulkhead;
 import io.github.resilience4j.bulkhead.ThreadPoolBulkheadRegistry;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -137,7 +138,7 @@ public class ThreadPoolBulkheadMetrics implements MetricSet {
      * @param bulkhead the circuit breaker
      */
     public static ThreadPoolBulkheadMetrics ofBulkhead(ThreadPoolBulkhead bulkhead) {
-        return new ThreadPoolBulkheadMetrics(List.of(bulkhead));
+        return new ThreadPoolBulkheadMetrics(Collections.singleton(bulkhead));
     }
 
     @Override

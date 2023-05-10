@@ -21,6 +21,7 @@ package io.github.resilience4j.bulkhead;
 import io.github.resilience4j.core.EventProcessor;
 import io.github.resilience4j.core.Registry;
 import io.github.resilience4j.core.registry.*;
+import io.github.resilience4j.core.utils.MapUtils;
 import org.assertj.core.api.Assertions;
 import org.junit.Before;
 import org.junit.Test;
@@ -54,9 +55,9 @@ public class BulkheadRegistryTest {
 
     @Test
     public void shouldInitRegistryTags() {
-        BulkheadRegistry registry = BulkheadRegistry.of(config,Map.of("Tag1Key","Tag1Value"));
+        BulkheadRegistry registry = BulkheadRegistry.of(config,io.github.resilience4j.core.utils.MapUtils.of("Tag1Key","Tag1Value"));
         assertThat(registry.getTags()).isNotEmpty();
-        assertThat(registry.getTags()).containsOnly(Map.entry("Tag1Key","Tag1Value"));
+        assertThat(registry.getTags()).containsOnly(io.github.resilience4j.core.utils.MapUtils.entry("Tag1Key","Tag1Value"));
     }
 
     @Test
@@ -107,7 +108,7 @@ public class BulkheadRegistryTest {
         BulkheadConfig bulkheadConfig = BulkheadConfig.ofDefaults();
         Map<String, BulkheadConfig> bulkheadConfigs = Collections
             .singletonMap("default", bulkheadConfig);
-        Map<String, String> bulkheadTags = Map.of("key1", "value1", "key2", "value2");
+        Map<String, String> bulkheadTags = io.github.resilience4j.core.utils.MapUtils.of("key1", "value1", "key2", "value2");
         BulkheadRegistry bulkheadRegistry = BulkheadRegistry.of(bulkheadConfigs, bulkheadTags);
         Bulkhead bulkhead = bulkheadRegistry.bulkhead("testName");
 
@@ -116,7 +117,7 @@ public class BulkheadRegistryTest {
 
     @Test
     public void tagsAddedToInstance() {
-        Map<String, String> bulkheadTags = Map.of("key1", "value1", "key2", "value2");
+        Map<String, String> bulkheadTags = io.github.resilience4j.core.utils.MapUtils.of("key1", "value1", "key2", "value2");
         Bulkhead bulkhead = registry.bulkhead("testName", bulkheadTags);
 
         assertThat(bulkhead.getTags()).containsAllEntriesOf(bulkheadTags);
@@ -125,9 +126,9 @@ public class BulkheadRegistryTest {
     @Test
     public void tagsOfRetriesShouldNotBeMixed() {
         BulkheadConfig config = BulkheadConfig.ofDefaults();
-        Map<String, String> bulkheadTags = Map.of("key1", "value1", "key2", "value2");
+        Map<String, String> bulkheadTags = io.github.resilience4j.core.utils.MapUtils.of("key1", "value1", "key2", "value2");
         Bulkhead bulkhead = registry.bulkhead("testName", config, bulkheadTags);
-        Map<String, String> bulkheadTags2 = Map.of("key3", "value3", "key4", "value4");
+        Map<String, String> bulkheadTags2 = io.github.resilience4j.core.utils.MapUtils.of("key3", "value3", "key4", "value4");
         Bulkhead bulkhead2 = registry.bulkhead("otherTestName", config, bulkheadTags2);
 
         Assertions.assertThat(bulkhead.getTags()).containsAllEntriesOf(bulkheadTags);
@@ -139,12 +140,12 @@ public class BulkheadRegistryTest {
         BulkheadConfig bulkheadConfig = BulkheadConfig.ofDefaults();
         Map<String, BulkheadConfig> bulkheadConfigs = Collections
             .singletonMap("default", bulkheadConfig);
-        Map<String, String> registryTags = Map.of("key1", "value1", "key2", "value2");
-        Map<String, String> instanceTags = Map.of("key1", "value3", "key4", "value4");
+        Map<String, String> registryTags = io.github.resilience4j.core.utils.MapUtils.of("key1", "value1", "key2", "value2");
+        Map<String, String> instanceTags = io.github.resilience4j.core.utils.MapUtils.of("key1", "value3", "key4", "value4");
         BulkheadRegistry bulkheadRegistry = BulkheadRegistry.of(bulkheadConfigs, registryTags);
         Bulkhead retry = bulkheadRegistry.bulkhead("testName", bulkheadConfig, instanceTags);
 
-        Map<String, String> expectedTags = Map.of("key1", "value3", "key2", "value2", "key4", "value4");
+        Map<String, String> expectedTags = io.github.resilience4j.core.utils.MapUtils.of("key1", "value3", "key2", "value2", "key4", "value4");
         Assertions.assertThat(retry.getTags()).containsAllEntriesOf(expectedTags);
     }
 
@@ -337,7 +338,7 @@ public class BulkheadRegistryTest {
 
     @Test
     public void testCreateUsingBuilderWithRegistryTags() {
-        Map<String, String> bulkheadTags = Map
+        Map<String, String> bulkheadTags = MapUtils
             .of("key1", "value1", "key2", "value2");
         BulkheadRegistry bulkheadRegistry = BulkheadRegistry.custom()
             .withBulkheadConfig(BulkheadConfig.ofDefaults())

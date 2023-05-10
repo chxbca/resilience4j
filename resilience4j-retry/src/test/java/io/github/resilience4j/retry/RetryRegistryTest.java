@@ -54,9 +54,9 @@ public class RetryRegistryTest {
     public void shouldInitRegistryTags() {
         RetryConfig retryConfig = RetryConfig.ofDefaults();
         Map<String, RetryConfig> retryConfigs = Collections.singletonMap("default", retryConfig);
-        RetryRegistry registry = RetryRegistry.of(retryConfigs,new NoOpRetryEventConsumer(), Map.of("Tag1Key","Tag1Value"));
+        RetryRegistry registry = RetryRegistry.of(retryConfigs,new NoOpRetryEventConsumer(), io.github.resilience4j.core.utils.MapUtils.of("Tag1Key","Tag1Value"));
         assertThat(registry.getTags()).isNotEmpty();
-        assertThat(registry.getTags()).containsOnly(Map.entry("Tag1Key","Tag1Value"));
+        assertThat(registry.getTags()).containsOnly(io.github.resilience4j.core.utils.MapUtils.entry("Tag1Key","Tag1Value"));
     }
 
     @Test
@@ -95,7 +95,7 @@ public class RetryRegistryTest {
     public void tagsOfRegistryAddedToInstance() {
         RetryConfig retryConfig = RetryConfig.ofDefaults();
         Map<String, RetryConfig> retryConfigs = Collections.singletonMap("default", retryConfig);
-        Map<String, String> retryTags = Map.of("key1", "value1", "key2", "value2");
+        Map<String, String> retryTags = io.github.resilience4j.core.utils.MapUtils.of("key1", "value1", "key2", "value2");
         RetryRegistry retryRegistry = RetryRegistry.of(retryConfigs, retryTags);
         Retry retry = retryRegistry.retry("testName");
 
@@ -104,7 +104,7 @@ public class RetryRegistryTest {
 
     @Test
     public void tagsAddedToInstance() {
-        Map<String, String> retryTags = Map.of("key1", "value1", "key2", "value2");
+        Map<String, String> retryTags = io.github.resilience4j.core.utils.MapUtils.of("key1", "value1", "key2", "value2");
         Retry retry = retryRegistry.retry("testName", retryTags);
 
         assertThat(retry.getTags()).containsAllEntriesOf(retryTags);
@@ -113,9 +113,9 @@ public class RetryRegistryTest {
     @Test
     public void tagsOfRetriesShouldNotBeMixed() {
         RetryConfig config = RetryConfig.ofDefaults();
-        Map<String, String> retryTags = Map.of("key1", "value1", "key2", "value2");
+        Map<String, String> retryTags = io.github.resilience4j.core.utils.MapUtils.of("key1", "value1", "key2", "value2");
         Retry retry = retryRegistry.retry("testName", config, retryTags);
-        Map<String, String> retryTags2 = Map.of("key3", "value3", "key4", "value4");
+        Map<String, String> retryTags2 = io.github.resilience4j.core.utils.MapUtils.of("key3", "value3", "key4", "value4");
         Retry retry2 = retryRegistry.retry("otherTestName", config, retryTags2);
 
         assertThat(retry.getTags()).containsAllEntriesOf(retryTags);
@@ -126,12 +126,12 @@ public class RetryRegistryTest {
     public void tagsOfInstanceTagsShouldOverrideRegistryTags() {
         RetryConfig retryConfig = RetryConfig.ofDefaults();
         Map<String, RetryConfig> retryConfigs = Collections.singletonMap("default", retryConfig);
-        Map<String, String> registryTags = Map.of("key1", "value1", "key2", "value2");
-        Map<String, String> instanceTags = Map.of("key1", "value3", "key4", "value4");
+        Map<String, String> registryTags = io.github.resilience4j.core.utils.MapUtils.of("key1", "value1", "key2", "value2");
+        Map<String, String> instanceTags = io.github.resilience4j.core.utils.MapUtils.of("key1", "value3", "key4", "value4");
         RetryRegistry retryRegistry = RetryRegistry.of(retryConfigs, registryTags);
         Retry retry = retryRegistry.retry("testName", retryConfig, instanceTags);
 
-        Map<String, String> expectedTags = Map.of("key1", "value3", "key2", "value2", "key4", "value4");
+        Map<String, String> expectedTags = io.github.resilience4j.core.utils.MapUtils.of("key1", "value3", "key2", "value2", "key4", "value4");
         assertThat(retry.getTags()).containsAllEntriesOf(expectedTags);
     }
 
@@ -360,7 +360,7 @@ public class RetryRegistryTest {
 
     @Test
     public void testCreateUsingBuilderWithRegistryTags() {
-        Map<String, String> retryTags = Map.of("key1", "value1", "key2", "value2");
+        Map<String, String> retryTags = io.github.resilience4j.core.utils.MapUtils.of("key1", "value1", "key2", "value2");
         RetryRegistry retryRegistry = RetryRegistry.custom()
             .withRetryConfig(RetryConfig.ofDefaults())
             .withTags(retryTags)

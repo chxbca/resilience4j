@@ -137,7 +137,7 @@ public class TaggedBulkheadMetricsTest {
 
     @Test
     public void customTagsShouldBeAdded() {
-        Bulkhead bulkheadC = bulkheadRegistry.bulkhead("backendC", Map.of("key1", "value1"));
+        Bulkhead bulkheadC = bulkheadRegistry.bulkhead("backendC", io.github.resilience4j.core.utils.MapUtils.of("key1", "value1"));
         // record some basic stats
         bulkheadC.tryAcquirePermission();
         bulkheadC.tryAcquirePermission();

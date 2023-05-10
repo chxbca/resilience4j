@@ -45,9 +45,9 @@ public class CircuitBreakerRegistryTest {
         CircuitBreakerConfig circuitBreakerConfig = CircuitBreakerConfig.ofDefaults();
         Map<String, CircuitBreakerConfig> circuitBreakerConfigs = Collections
             .singletonMap("default", circuitBreakerConfig);
-        CircuitBreakerRegistry registry = CircuitBreakerRegistry.of(circuitBreakerConfigs,new NoOpCircuitBreakerEventConsumer(),Map.of("Tag1Key","Tag1Value"));
+        CircuitBreakerRegistry registry = CircuitBreakerRegistry.of(circuitBreakerConfigs,new NoOpCircuitBreakerEventConsumer(),io.github.resilience4j.core.utils.MapUtils.of("Tag1Key","Tag1Value"));
         assertThat(registry.getTags()).isNotEmpty();
-        assertThat(registry.getTags()).containsOnly(Map.entry("Tag1Key","Tag1Value"));
+        assertThat(registry.getTags()).containsOnly(io.github.resilience4j.core.utils.MapUtils.entry("Tag1Key","Tag1Value"));
     }
 
     @Test
@@ -89,7 +89,7 @@ public class CircuitBreakerRegistryTest {
         CircuitBreakerConfig circuitBreakerConfig = CircuitBreakerConfig.ofDefaults();
         Map<String, CircuitBreakerConfig> circuitBreakerConfigs = Collections
             .singletonMap("default", circuitBreakerConfig);
-        Map<String, String> circuitBreakerTags = Map.of("key1", "value1", "key2", "value2");
+        Map<String, String> circuitBreakerTags = io.github.resilience4j.core.utils.MapUtils.of("key1", "value1", "key2", "value2");
         CircuitBreakerRegistry circuitBreakerRegistry = CircuitBreakerRegistry
             .of(circuitBreakerConfigs, circuitBreakerTags);
         CircuitBreaker circuitBreaker = circuitBreakerRegistry.circuitBreaker("testName");
@@ -100,7 +100,7 @@ public class CircuitBreakerRegistryTest {
     @Test
     public void tagsAddedToInstance() {
         CircuitBreakerRegistry circuitBreakerRegistry = CircuitBreakerRegistry.ofDefaults();
-        Map<String, String> retryTags = Map.of("key1", "value1", "key2", "value2");
+        Map<String, String> retryTags = io.github.resilience4j.core.utils.MapUtils.of("key1", "value1", "key2", "value2");
         CircuitBreaker circuitBreaker = circuitBreakerRegistry
             .circuitBreaker("testName", retryTags);
 
@@ -111,10 +111,10 @@ public class CircuitBreakerRegistryTest {
     public void tagsOfRetriesShouldNotBeMixed() {
         CircuitBreakerRegistry circuitBreakerRegistry = CircuitBreakerRegistry.ofDefaults();
         CircuitBreakerConfig circuitBreakerConfig = CircuitBreakerConfig.ofDefaults();
-        Map<String, String> circuitBreakerTags = Map.of("key1", "value1", "key2", "value2");
+        Map<String, String> circuitBreakerTags = io.github.resilience4j.core.utils.MapUtils.of("key1", "value1", "key2", "value2");
         CircuitBreaker circuitBreaker = circuitBreakerRegistry
             .circuitBreaker("testName", circuitBreakerConfig, circuitBreakerTags);
-        Map<String, String> circuitBreakerTags2 = Map.of("key3", "value3", "key4", "value4");
+        Map<String, String> circuitBreakerTags2 = io.github.resilience4j.core.utils.MapUtils.of("key3", "value3", "key4", "value4");
         CircuitBreaker circuitBreaker2 = circuitBreakerRegistry
             .circuitBreaker("otherTestName", circuitBreakerConfig, circuitBreakerTags2);
 
@@ -127,14 +127,14 @@ public class CircuitBreakerRegistryTest {
         CircuitBreakerConfig circuitBreakerConfig = CircuitBreakerConfig.ofDefaults();
         Map<String, CircuitBreakerConfig> circuitBreakerConfigs = Collections
             .singletonMap("default", circuitBreakerConfig);
-        Map<String, String> circuitBreakerTags = Map.of("key1", "value1", "key2", "value2");
-        Map<String, String> instanceTags = Map.of("key1", "value3", "key4", "value4");
+        Map<String, String> circuitBreakerTags = io.github.resilience4j.core.utils.MapUtils.of("key1", "value1", "key2", "value2");
+        Map<String, String> instanceTags = io.github.resilience4j.core.utils.MapUtils.of("key1", "value3", "key4", "value4");
         CircuitBreakerRegistry circuitBreakerRegistry = CircuitBreakerRegistry
             .of(circuitBreakerConfigs, circuitBreakerTags);
         CircuitBreaker circuitBreaker = circuitBreakerRegistry
             .circuitBreaker("testName", circuitBreakerConfig, instanceTags);
 
-        Map<String, String> expectedTags = Map.of("key1", "value3", "key2", "value2", "key4", "value4");
+        Map<String, String> expectedTags = io.github.resilience4j.core.utils.MapUtils.of("key1", "value3", "key2", "value2", "key4", "value4");
         assertThat(circuitBreaker.getTags()).containsAllEntriesOf(expectedTags);
     }
 
@@ -372,7 +372,7 @@ public class CircuitBreakerRegistryTest {
 
     @Test
     public void testCreateUsingBuilderWithRegistryTags() {
-        Map<String, String> circuitBreakerTags = Map.of("key1", "value1", "key2", "value2");
+        Map<String, String> circuitBreakerTags = io.github.resilience4j.core.utils.MapUtils.of("key1", "value1", "key2", "value2");
         CircuitBreakerRegistry circuitBreakerRegistry = CircuitBreakerRegistry.custom()
             .withCircuitBreakerConfig(CircuitBreakerConfig.ofDefaults())
             .withTags(circuitBreakerTags)

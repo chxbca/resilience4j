@@ -533,7 +533,7 @@ public class SemaphoreBulkheadTest {
         configs.put("default", defaultConfig);
         final InMemoryBulkheadRegistry inMemoryBulkheadRegistry =
             new InMemoryBulkheadRegistry(configs, registryEventConsumers,
-                Map.of("Tag1", "Tag1Value"), new InMemoryRegistryStore<>());
+                io.github.resilience4j.core.utils.MapUtils.of("Tag1", "Tag1Value"), new InMemoryRegistryStore<>());
 
         AssertionsForClassTypes.assertThat(inMemoryBulkheadRegistry).isNotNull();
         AssertionsForClassTypes.assertThat(inMemoryBulkheadRegistry.getDefaultConfig()).isEqualTo(defaultConfig);

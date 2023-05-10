@@ -25,6 +25,7 @@ import com.codahale.metrics.MetricSet;
 import io.github.resilience4j.ratelimiter.RateLimiter;
 import io.github.resilience4j.ratelimiter.RateLimiterRegistry;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -140,7 +141,7 @@ public class RateLimiterMetrics implements MetricSet {
      * @param rateLimiter the rate limiter
      */
     public static RateLimiterMetrics ofRateLimiter(RateLimiter rateLimiter) {
-        return new RateLimiterMetrics(List.of(rateLimiter));
+        return new RateLimiterMetrics(Collections.singleton(rateLimiter));
     }
 
     @Override

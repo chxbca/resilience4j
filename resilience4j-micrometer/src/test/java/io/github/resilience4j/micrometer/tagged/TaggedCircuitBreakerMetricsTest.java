@@ -89,7 +89,7 @@ public class TaggedCircuitBreakerMetricsTest {
 
     @Test
     public void shouldAddCustomTags() {
-        CircuitBreaker circuitBreakerF = circuitBreakerRegistry.circuitBreaker("backendF", Map.of("key1", "value1"));
+        CircuitBreaker circuitBreakerF = circuitBreakerRegistry.circuitBreaker("backendF", io.github.resilience4j.core.utils.MapUtils.of("key1", "value1"));
         circuitBreakerF.onSuccess(0, TimeUnit.NANOSECONDS);
         assertThat(taggedCircuitBreakerMetrics.meterIdMap).containsKeys("backendA", "backendF");
         assertThat(taggedCircuitBreakerMetrics.meterIdMap.get("backendF")).hasSize(16);

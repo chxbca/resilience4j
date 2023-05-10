@@ -18,6 +18,8 @@
  */
 package io.github.resilience4j.circularbuffer;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Stream;
@@ -71,7 +73,7 @@ public class ConcurrentCircularFifoBuffer<T> implements CircularFifoBuffer<T> {
      */
     @Override
     public List<T> toList() {
-        return List.copyOf(queue);
+        return Collections.unmodifiableList(new ArrayList<>(queue));
     }
 
     /**

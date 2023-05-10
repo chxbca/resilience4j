@@ -133,7 +133,7 @@ public class TimeLimiterConfiguration {
                         entry -> timeLimiterConfigurationProperties.createTimeLimiterConfig(
                             entry.getKey(), entry.getValue(), compositeTimeLimiterCustomizer)));
 
-        return TimeLimiterRegistry.of(configs, timeLimiterRegistryEventConsumer, Map.copyOf(timeLimiterConfigurationProperties.getTags()));
+        return TimeLimiterRegistry.of(configs, timeLimiterRegistryEventConsumer, io.github.resilience4j.core.utils.MapUtils.copyOf(timeLimiterConfigurationProperties.getTags()));
     }
 
     /**
@@ -155,7 +155,7 @@ public class TimeLimiterConfiguration {
 
         compositeTimeLimiterCustomizer.instanceNames()
             .stream()
-            .filter(name -> timeLimiterRegistry.getConfiguration(name).isEmpty())
+            .filter(name -> !timeLimiterRegistry.getConfiguration(name).isPresent())
             .forEach(name ->
                 timeLimiterRegistry.timeLimiter(name, timeLimiterConfigurationProperties
                     .createTimeLimiterConfig(name, null, compositeTimeLimiterCustomizer))

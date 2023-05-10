@@ -900,7 +900,7 @@ public interface CircuitBreaker {
 
         private static final Map<Map.Entry<State, State>, StateTransition> STATE_TRANSITION_MAP = Arrays
             .stream(StateTransition.values())
-            .collect(Collectors.toMap(v -> Map.entry(v.fromState, v.toState), Function.identity()));
+            .collect(Collectors.toMap(v -> io.github.resilience4j.core.utils.MapUtils.entry(v.fromState, v.toState), Function.identity()));
         private final State fromState;
         private final State toState;
 
@@ -912,7 +912,7 @@ public interface CircuitBreaker {
         public static StateTransition transitionBetween(String name, State fromState,
             State toState) {
             final StateTransition stateTransition = STATE_TRANSITION_MAP
-                .get(Map.entry(fromState, toState));
+                .get(io.github.resilience4j.core.utils.MapUtils.entry(fromState, toState));
             if (stateTransition == null) {
                 throw new IllegalStateTransitionException(name, fromState, toState);
             }

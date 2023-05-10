@@ -15,6 +15,8 @@
  */
 package io.github.resilience4j.consumer;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
@@ -47,6 +49,6 @@ public class DefaultEventConsumerRegistry<T> implements EventConsumerRegistry<T>
 
     @Override
     public List<CircularEventConsumer<T>> getAllEventConsumer() {
-        return List.copyOf(registry.values());
+        return Collections.unmodifiableList(new ArrayList<>(registry.values()));
     }
 }

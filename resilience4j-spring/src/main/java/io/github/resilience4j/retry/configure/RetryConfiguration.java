@@ -90,7 +90,7 @@ public class RetryConfiguration {
 
         compositeRetryCustomizer.instanceNames()
             .stream()
-            .filter(name -> retryRegistry.getConfiguration(name).isEmpty())
+            .filter(name -> !retryRegistry.getConfiguration(name).isPresent())
             .forEach(name ->
                 retryRegistry.retry(name, retryConfigurationProperties.createRetryConfig(name, compositeRetryCustomizer)));
     }
@@ -119,7 +119,7 @@ public class RetryConfiguration {
                     .createRetryConfig(entry.getValue(), compositeRetryCustomizer,
                         entry.getKey())));
 
-        return RetryRegistry.of(configs, retryRegistryEventConsumer, Map.copyOf(retryConfigurationProperties.getTags()));
+        return RetryRegistry.of(configs, retryRegistryEventConsumer, io.github.resilience4j.core.utils.MapUtils.copyOf(retryConfigurationProperties.getTags()));
     }
 
     /**

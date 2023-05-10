@@ -73,7 +73,7 @@ public class TaggedTimeLimiterMetricsPublisherTest {
 
     @Test
     public void shouldAddCustomTags() {
-        TimeLimiter timeLimiterF = timeLimiterRegistry.timeLimiter("backendF", Map.of("key1", "value1"));
+        TimeLimiter timeLimiterF = timeLimiterRegistry.timeLimiter("backendF", io.github.resilience4j.core.utils.MapUtils.of("key1", "value1"));
         timeLimiterF.onSuccess();
         assertThat(taggedTimeLimiterMetricsPublisher.meterIdMap).containsKeys("backendA", "backendF");
         assertThat(taggedTimeLimiterMetricsPublisher.meterIdMap.get("backendF")).hasSize(3);

@@ -25,6 +25,7 @@ import com.codahale.metrics.MetricSet;
 import io.github.resilience4j.circuitbreaker.CircuitBreaker;
 import io.github.resilience4j.circuitbreaker.CircuitBreakerRegistry;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -155,7 +156,7 @@ public class CircuitBreakerMetrics implements MetricSet {
      * @param circuitBreaker the circuit breaker
      */
     public static CircuitBreakerMetrics ofCircuitBreaker(CircuitBreaker circuitBreaker) {
-        return new CircuitBreakerMetrics(List.of(circuitBreaker));
+        return new CircuitBreakerMetrics(Collections.singleton(circuitBreaker));
     }
 
     @Override

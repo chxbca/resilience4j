@@ -90,7 +90,7 @@ public class RateLimiterConfiguration {
 
         compositeRateLimiterCustomizer.instanceNames()
             .stream()
-            .filter(name -> rateLimiterRegistry.getConfiguration(name).isEmpty())
+            .filter(name -> !rateLimiterRegistry.getConfiguration(name).isPresent())
             .forEach(name -> rateLimiterRegistry.rateLimiter(name, rateLimiterProperties
                 .createRateLimiterConfig(null, compositeRateLimiterCustomizer, name)));
     }
@@ -121,7 +121,7 @@ public class RateLimiterConfiguration {
                         entry.getKey())));
 
         return RateLimiterRegistry.of(configs, rateLimiterRegistryEventConsumer,
-            Map.copyOf(rateLimiterConfigurationProperties.getTags()));
+            io.github.resilience4j.core.utils.MapUtils.copyOf(rateLimiterConfigurationProperties.getTags()));
     }
 
     /**

@@ -91,7 +91,7 @@ public class ThreadPoolBulkheadRegistryTest {
 //	public void tagsOfRegistryAddedToInstance() {
 //		ThreadPoolBulkhead retryConfig = ThreadPoolBulkhead.ofDefaults();
 //		Map<String, RetryConfig> retryConfigs = Collections.singletonMap("default", retryConfig);
-//		Map<String, String> retryTags = Map.of("key1","value1", "key2", "value2");
+//		Map<String, String> retryTags = io.github.resilience4j.core.utils.MapUtils.of("key1","value1", "key2", "value2");
 //		RetryRegistry retryRegistry = RetryRegistry.of(retryConfigs, retryTags);
 //		Retry retry = retryRegistry.retry("testName");
 //
@@ -106,7 +106,7 @@ public class ThreadPoolBulkheadRegistryTest {
 
     @Test
     public void tagsAddedToInstance() {
-        Map<String, String> bulkheadTags = Map.of("key1", "value1", "key2", "value2");
+        Map<String, String> bulkheadTags = io.github.resilience4j.core.utils.MapUtils.of("key1", "value1", "key2", "value2");
         ThreadPoolBulkhead bulkhead = registry.bulkhead("testName", bulkheadTags);
 
         assertThat(bulkhead.getTags()).containsAllEntriesOf(bulkheadTags);
@@ -115,9 +115,9 @@ public class ThreadPoolBulkheadRegistryTest {
     @Test
     public void tagsOfRetriesShouldNotBeMixed() {
         ThreadPoolBulkheadConfig config = ThreadPoolBulkheadConfig.ofDefaults();
-        Map<String, String> bulkheadTags = Map.of("key1", "value1", "key2", "value2");
+        Map<String, String> bulkheadTags = io.github.resilience4j.core.utils.MapUtils.of("key1", "value1", "key2", "value2");
         ThreadPoolBulkhead bulkhead = registry.bulkhead("testName", config, bulkheadTags);
-        Map<String, String> bulkheadTags2 = Map.of("key3", "value3", "key4", "value4");
+        Map<String, String> bulkheadTags2 = io.github.resilience4j.core.utils.MapUtils.of("key3", "value3", "key4", "value4");
         ThreadPoolBulkhead bulkhead2 = registry.bulkhead("otherTestName", config, bulkheadTags2);
 
         assertThat(bulkhead.getTags()).containsAllEntriesOf(bulkheadTags);
@@ -129,14 +129,14 @@ public class ThreadPoolBulkheadRegistryTest {
         ThreadPoolBulkheadConfig bulkheadConfig = ThreadPoolBulkheadConfig.ofDefaults();
         Map<String, ThreadPoolBulkheadConfig> bulkheadConfigs = Collections
             .singletonMap("default", bulkheadConfig);
-        Map<String, String> registryTags = Map.of("key1", "value1", "key2", "value2");
-        Map<String, String> instanceTags = Map.of("key1", "value3", "key4", "value4");
+        Map<String, String> registryTags = io.github.resilience4j.core.utils.MapUtils.of("key1", "value1", "key2", "value2");
+        Map<String, String> instanceTags = io.github.resilience4j.core.utils.MapUtils.of("key1", "value3", "key4", "value4");
         ThreadPoolBulkheadRegistry bulkheadRegistry = ThreadPoolBulkheadRegistry
             .of(bulkheadConfigs, registryTags);
         ThreadPoolBulkhead bulkhead = bulkheadRegistry
             .bulkhead("testName", bulkheadConfig, instanceTags);
 
-        Map<String, String> expectedTags = Map.of("key1", "value3", "key2", "value2", "key4", "value4");
+        Map<String, String> expectedTags = io.github.resilience4j.core.utils.MapUtils.of("key1", "value3", "key2", "value2", "key4", "value4");
         assertThat(bulkhead.getTags()).containsAllEntriesOf(expectedTags);
     }
 
@@ -346,7 +346,7 @@ public class ThreadPoolBulkheadRegistryTest {
 
     @Test
     public void testCreateUsingBuilderWithRegistryTags() {
-        Map<String, String> threadPoolBulkheadTags = Map.of("key1", "value1", "key2", "value2");
+        Map<String, String> threadPoolBulkheadTags = io.github.resilience4j.core.utils.MapUtils.of("key1", "value1", "key2", "value2");
         ThreadPoolBulkheadRegistry threadPoolBulkheadRegistry = ThreadPoolBulkheadRegistry.custom()
             .withThreadPoolBulkheadConfig(ThreadPoolBulkheadConfig.ofDefaults())
             .withTags(threadPoolBulkheadTags)

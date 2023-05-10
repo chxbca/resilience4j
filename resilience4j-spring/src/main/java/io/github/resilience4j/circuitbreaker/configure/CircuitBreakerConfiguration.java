@@ -140,7 +140,7 @@ public class CircuitBreakerConfiguration {
             .entrySet().stream().collect(Collectors.toMap(Map.Entry::getKey,
                 entry -> circuitBreakerProperties.createCircuitBreakerConfig(entry.getKey(), entry.getValue(), compositeCircuitBreakerCustomizer)));
 
-        return CircuitBreakerRegistry.of(configs, circuitBreakerRegistryEventConsumer, Map.copyOf(circuitBreakerProperties.getTags()));
+        return CircuitBreakerRegistry.of(configs, circuitBreakerRegistryEventConsumer, io.github.resilience4j.core.utils.MapUtils.copyOf(circuitBreakerProperties.getTags()));
     }
 
     /**
@@ -156,7 +156,7 @@ public class CircuitBreakerConfiguration {
 
         compositeCircuitBreakerCustomizer.instanceNames()
             .stream()
-            .filter(name -> circuitBreakerRegistry.getConfiguration(name).isEmpty())
+            .filter(name -> !circuitBreakerRegistry.getConfiguration(name).isPresent())
             .forEach(name -> circuitBreakerRegistry.circuitBreaker(name,
                 circuitBreakerProperties.createCircuitBreakerConfig(name, null, compositeCircuitBreakerCustomizer)));
     }

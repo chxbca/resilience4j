@@ -76,7 +76,7 @@ public class TaggedRetryMetricsTest {
 
     @Test
     public void shouldAddCustomTags() {
-        retryRegistry.retry("backendF", Map.of("key1", "value1"));
+        retryRegistry.retry("backendF", io.github.resilience4j.core.utils.MapUtils.of("key1", "value1"));
         assertThat(taggedRetryMetrics.meterIdMap).containsKeys("backendA", "backendF");
         assertThat(taggedRetryMetrics.meterIdMap.get("backendA")).hasSize(4);
         assertThat(taggedRetryMetrics.meterIdMap.get("backendF")).hasSize(4);

@@ -42,7 +42,7 @@ public class InMemoryRetryRegistryTest {
         configs.put("default", defaultConfig);
         final InMemoryRetryRegistry inMemoryRetryRegistry =
             new InMemoryRetryRegistry(configs, registryEventConsumers,
-                Map.of("Tag1", "Tag1Value"), new InMemoryRegistryStore<>());
+                io.github.resilience4j.core.utils.MapUtils.of("Tag1", "Tag1Value"), new InMemoryRegistryStore<>());
 
         assertThat(inMemoryRetryRegistry).isNotNull();
         assertThat(inMemoryRetryRegistry.getDefaultConfig()).isEqualTo(defaultConfig);

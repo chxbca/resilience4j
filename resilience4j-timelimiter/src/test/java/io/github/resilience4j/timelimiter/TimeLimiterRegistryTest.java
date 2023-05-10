@@ -45,9 +45,9 @@ public class TimeLimiterRegistryTest {
         TimeLimiterConfig timeLimiterConfig = TimeLimiterConfig.ofDefaults();
         Map<String, TimeLimiterConfig> timeLimiterConfigs = Collections
             .singletonMap("default", timeLimiterConfig);
-        TimeLimiterRegistry registry = TimeLimiterRegistry.of(timeLimiterConfigs, new NoOpTimeLimiterEventConsumer(), Map.of("Tag1Key","Tag1Value"));
+        TimeLimiterRegistry registry = TimeLimiterRegistry.of(timeLimiterConfigs, new NoOpTimeLimiterEventConsumer(), io.github.resilience4j.core.utils.MapUtils.of("Tag1Key","Tag1Value"));
         assertThat(registry.getTags()).isNotEmpty();
-        assertThat(registry.getTags()).containsOnly(Map.entry("Tag1Key","Tag1Value"));
+        assertThat(registry.getTags()).containsOnly(io.github.resilience4j.core.utils.MapUtils.entry("Tag1Key","Tag1Value"));
     }
 
     @Test
@@ -62,7 +62,7 @@ public class TimeLimiterRegistryTest {
         TimeLimiterConfig timeLimiterConfig = TimeLimiterConfig.ofDefaults();
         Map<String, TimeLimiterConfig> timeLimiterConfigs = Collections
             .singletonMap("default", timeLimiterConfig);
-        Map<String, String> timeLimiterTags = Map.of("key1", "value1", "key2", "value2");
+        Map<String, String> timeLimiterTags = io.github.resilience4j.core.utils.MapUtils.of("key1", "value1", "key2", "value2");
         TimeLimiterRegistry timeLimiterRegistry = TimeLimiterRegistry
             .of(timeLimiterConfigs, timeLimiterTags);
         TimeLimiter TimeLimiter = timeLimiterRegistry.timeLimiter("testName");
@@ -73,7 +73,7 @@ public class TimeLimiterRegistryTest {
     @Test
     public void tagsAddedToInstance() {
         TimeLimiterRegistry timeLimiterRegistry = TimeLimiterRegistry.ofDefaults();
-        Map<String, String> timeLimiterTags = Map.of("key1", "value1", "key2", "value2");
+        Map<String, String> timeLimiterTags = io.github.resilience4j.core.utils.MapUtils.of("key1", "value1", "key2", "value2");
         TimeLimiter TimeLimiter = timeLimiterRegistry
             .timeLimiter("testName", timeLimiterTags);
 
@@ -84,10 +84,10 @@ public class TimeLimiterRegistryTest {
     public void tagsOfTimeLimitersShouldNotBeMixed() {
         TimeLimiterRegistry timeLimiterRegistry = TimeLimiterRegistry.ofDefaults();
         TimeLimiterConfig timeLimiterConfig = TimeLimiterConfig.ofDefaults();
-        Map<String, String> timeLimiterTags = Map.of("key1", "value1", "key2", "value2");
+        Map<String, String> timeLimiterTags = io.github.resilience4j.core.utils.MapUtils.of("key1", "value1", "key2", "value2");
         TimeLimiter TimeLimiter = timeLimiterRegistry
             .timeLimiter("testName", timeLimiterConfig, timeLimiterTags);
-        Map<String, String> timeLimiterTags2 = Map.of("key3", "value3", "key4", "value4");
+        Map<String, String> timeLimiterTags2 = io.github.resilience4j.core.utils.MapUtils.of("key3", "value3", "key4", "value4");
         TimeLimiter TimeLimiter2 = timeLimiterRegistry
             .timeLimiter("otherTestName", timeLimiterConfig, timeLimiterTags2);
 
@@ -100,14 +100,14 @@ public class TimeLimiterRegistryTest {
         TimeLimiterConfig timeLimiterConfig = TimeLimiterConfig.ofDefaults();
         Map<String, TimeLimiterConfig> timeLimiterConfigs = Collections
             .singletonMap("default", timeLimiterConfig);
-        Map<String, String> timeLimiterTags = Map.of("key1", "value1", "key2", "value2");
-        Map<String, String> instanceTags = Map.of("key1", "value3", "key4", "value4");
+        Map<String, String> timeLimiterTags = io.github.resilience4j.core.utils.MapUtils.of("key1", "value1", "key2", "value2");
+        Map<String, String> instanceTags = io.github.resilience4j.core.utils.MapUtils.of("key1", "value3", "key4", "value4");
         TimeLimiterRegistry timeLimiterRegistry = TimeLimiterRegistry
             .of(timeLimiterConfigs, timeLimiterTags);
         TimeLimiter timeLimiter = timeLimiterRegistry
             .timeLimiter("testName", timeLimiterConfig, instanceTags);
 
-        Map<String, String> expectedTags = Map.of("key1", "value3", "key2", "value2", "key4", "value4");
+        Map<String, String> expectedTags = io.github.resilience4j.core.utils.MapUtils.of("key1", "value3", "key2", "value2", "key4", "value4");
         assertThat(timeLimiter.getTags()).containsAllEntriesOf(expectedTags);
     }
 

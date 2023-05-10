@@ -162,8 +162,11 @@ public class RetryImpl<T> implements Retry {
             } else {
                 if (currentNumOfAttempts >= maxAttempts) {
                     failedAfterRetryCounter.increment();
-                    Throwable throwable = Optional.ofNullable(lastException.get())
-                        .or(() -> Optional.ofNullable(lastRuntimeException.get()))
+                    Optional<Exception> exception = Optional.ofNullable(lastException.get());
+                    if (!exception.isPresent()) {
+                        exception = Optional.ofNullable(lastRuntimeException.get());
+                    }
+                    Throwable throwable = exception
                         .filter(p -> !failAfterMaxAttempts)
                         .orElse(new MaxRetriesExceeded(
                             "max retries is reached out for the result predicate check"

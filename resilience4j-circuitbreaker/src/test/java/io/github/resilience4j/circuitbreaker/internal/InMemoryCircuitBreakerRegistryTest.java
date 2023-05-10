@@ -106,7 +106,7 @@ public class InMemoryCircuitBreakerRegistryTest {
         configs.put("default", defaultConfig);
         final InMemoryCircuitBreakerRegistry inMemoryCircuitBreakerRegistry =
             new InMemoryCircuitBreakerRegistry(configs, registryEventConsumers,
-                Map.of("Tag1", "Tag1Value"), new InMemoryRegistryStore<>());
+                io.github.resilience4j.core.utils.MapUtils.of("Tag1", "Tag1Value"), new InMemoryRegistryStore<>());
 
         assertThat(inMemoryCircuitBreakerRegistry).isNotNull();
         assertThat(inMemoryCircuitBreakerRegistry.getDefaultConfig()).isEqualTo(defaultConfig);

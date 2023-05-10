@@ -92,7 +92,7 @@ public class BulkheadConfiguration {
 
         compositeBulkheadCustomizer.instanceNames()
             .stream()
-            .filter(name -> bulkheadRegistry.getConfiguration(name).isEmpty())
+            .filter(name -> !bulkheadRegistry.getConfiguration(name).isPresent())
             .forEach(name -> bulkheadRegistry.bulkhead(name,
                 bulkheadConfigurationProperties.createBulkheadConfig(null, compositeBulkheadCustomizer, name)));
     }
@@ -120,7 +120,7 @@ public class BulkheadConfiguration {
             .entrySet().stream().collect(Collectors.toMap(Map.Entry::getKey,
                 entry -> bulkheadConfigurationProperties.createBulkheadConfig(entry.getValue(),
                     compositeBulkheadCustomizer, entry.getKey())));
-        return BulkheadRegistry.of(configs, bulkheadRegistryEventConsumer, Map.copyOf(bulkheadConfigurationProperties.getTags()));
+        return BulkheadRegistry.of(configs, bulkheadRegistryEventConsumer, io.github.resilience4j.core.utils.MapUtils.copyOf(bulkheadConfigurationProperties.getTags()));
     }
 
     /**

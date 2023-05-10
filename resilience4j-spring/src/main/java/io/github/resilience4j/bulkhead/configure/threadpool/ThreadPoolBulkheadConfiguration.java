@@ -88,7 +88,7 @@ public class ThreadPoolBulkheadConfiguration {
 
         bulkheadCustomizer.instanceNames()
             .stream()
-            .filter(name -> bulkheadRegistry.getConfiguration(name).isEmpty())
+            .filter(name -> !bulkheadRegistry.getConfiguration(name).isPresent())
             .forEach(name -> bulkheadRegistry.bulkhead(name,
                 bulkheadConfigurationProperties.createThreadPoolBulkheadConfig(null, bulkheadCustomizer, name)));
     }
@@ -120,7 +120,7 @@ public class ThreadPoolBulkheadConfiguration {
                 entry -> threadPoolBulkheadConfigurationProperties
                     .createThreadPoolBulkheadConfig(entry.getValue(),
                         compositeThreadPoolBulkheadCustomizer, entry.getKey())));
-        return ThreadPoolBulkheadRegistry.of(configs, threadPoolBulkheadRegistryEventConsumer, Map.copyOf(threadPoolBulkheadConfigurationProperties.getTags()));
+        return ThreadPoolBulkheadRegistry.of(configs, threadPoolBulkheadRegistryEventConsumer, io.github.resilience4j.core.utils.MapUtils.copyOf(threadPoolBulkheadConfigurationProperties.getTags()));
     }
 
     /**

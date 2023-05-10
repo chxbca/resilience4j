@@ -158,7 +158,7 @@ public class InMemoryRateLimiterRegistryTest {
         configs.put("default", defaultConfig);
         final InMemoryRateLimiterRegistry inMemoryRateLimiterRegistry =
             new InMemoryRateLimiterRegistry(configs, registryEventConsumers,
-                Map.of("Tag1", "Tag1Value"), new InMemoryRegistryStore<>());
+                io.github.resilience4j.core.utils.MapUtils.of("Tag1", "Tag1Value"), new InMemoryRegistryStore<>());
 
         AssertionsForClassTypes.assertThat(inMemoryRateLimiterRegistry).isNotNull();
         AssertionsForClassTypes.assertThat(inMemoryRateLimiterRegistry.getDefaultConfig()).isEqualTo(defaultConfig);
